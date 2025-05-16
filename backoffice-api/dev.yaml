@@ -9,3 +9,5 @@ spec:
       containers:
         - name: backoffice-api
           image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/api-user:latest
+image:
+  tag: ffce61db81c91aba4e88bf340140eca5acd65aae
