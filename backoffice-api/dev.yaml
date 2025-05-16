@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backoffice-api
+  namespace: backoffice
+spec:
+  template:
+    spec:
+      containers:
+        - name: backoffice-api
+          image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/api-user:latest
