@@ -9,7 +9,7 @@ image:
   repository: 793414601893.dkr.ecr.us-east-1.amazonaws.com/api-user
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "ffce61db81c91aba4e88bf340140eca5acd65aae"
+  tag: "529e15825e8301b12008c821f923f985a4252dc1"
 resources:
   requests:
     cpu: 50m
