@@ -8,7 +8,7 @@ spec:
   template:
     spec:
       imagePullSecrets:
-        - name: regcred
+        - name: ecr-secret
   generators:
     - list:
         elements:
