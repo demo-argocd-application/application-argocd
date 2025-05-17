@@ -13,7 +13,7 @@ spec:
     - list:
         elements:
           - cluster: backoffice-api
-            namespace: backoffice-api-dev
+            namespace: backoffice-api
             valueFiles: dev.yaml
             env: dev
           - cluster: backoffice-api
