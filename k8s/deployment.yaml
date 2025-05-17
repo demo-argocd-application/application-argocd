@@ -32,7 +32,7 @@ spec:
     spec:
       project: backoffice-api
       source:
-        repoURL: "https://github.com/demo-argocd-application/api-termgames.git"
+        repoURL: "https://github.com/demo-argocd-application/application-argocd.git"
         targetRevision: HEAD
         path: backoffice-api
         helm:
