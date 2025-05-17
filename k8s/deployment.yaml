@@ -5,6 +5,10 @@ metadata:
   labels:
     application: backoffice-api
 spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: regcred
   generators:
     - list:
         elements:
