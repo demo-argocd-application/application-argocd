@@ -1,0 +1,39 @@
+envVars:
+  - name: ENV
+    value: prod
+  - name: DB_HOST
+    value: postgres-prod.postgres.svc.cluster.local
+  - name: DB_PORT
+    value: 5432
+image:
+  repository: 793414601893.dkr.ecr.us-east-1.amazonaws.com/api-user
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "529e15825e8301b12008c821f923f985a4252dc1"
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 150m
+    memory: 256Mi
+ingress:
+  enabled: true
+  className: "nginx-external-l4"
+  annotations: {}
+  hosts:
+    - host: prod-bo.allpresent.xyz
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: backoffice-api
+              port:
+                number: 80
+  tls: []
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
