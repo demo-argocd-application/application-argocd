@@ -14,16 +14,16 @@ spec:
         elements:
           - cluster: backoffice-api
             namespace: backoffice-api
-            valueFiles: dev.yaml
             env: dev
+            valuesFile: dev.yaml
           - cluster: backoffice-api
             namespace: backoffice-api-prod
-            valueFiles: prod.yaml
             env: prod
+            valuesFile: prod.yaml
           - cluster: backoffice-api
             namespace: backoffice-api-staging
-            valueFiles: staging.yaml
             env: staging
+            valuesFile: staging.yaml
   template:
     metadata:
       name: "{{env}}-{{cluster}}-backoffice-api"
