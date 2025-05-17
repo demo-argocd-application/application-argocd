@@ -8,16 +8,16 @@ spec:
   generators:
     - list:
         elements:
-          - cluster: phoenix
-            namespace: phoenix-dev
+          - cluster: backoffice-api
+            namespace: backoffice-api-dev
             valueFiles: dev.yaml
             env: dev
-          - cluster: phoenix
-            namespace: phoenix-prod
+          - cluster: backoffice-api
+            namespace: backoffice-api-prod
             valueFiles: prod.yaml
             env: prod
-          - cluster: phoenix
-            namespace: phoenix-staging
+          - cluster: backoffice-api
+            namespace: backoffice-api-staging
             valueFiles: staging.yaml
             env: staging
   template:
@@ -26,9 +26,9 @@ spec:
       labels:
         application: backoffice-api
     spec:
-      project: phoenix
+      project: backoffice-api
       source:
-        repoURL: "https://github.com/phoenix-devx/phoenix-argo-cd.git"
+        repoURL: "https://github.com/demo-argocd-application/api-termgames.git"
         targetRevision: HEAD
         path: backoffice-api
         helm:
