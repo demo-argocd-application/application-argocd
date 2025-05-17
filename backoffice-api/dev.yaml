@@ -1,13 +1,39 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backoffice-api
-  namespace: backoffice
-spec:
-  template:
-    spec:
-      containers:
-        - name: backoffice-api
-          image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/api-user:latest
+envVars:
+  - name: ENV
+    value: dev
+  - name: DB_HOST
+    value: postgres-dev.postgres.svc.cluster.local
+  - name: DB_PORT
+    value: 5432
 image:
-  tag: ffce61db81c91aba4e88bf340140eca5acd65aae
+  repository: 793414601893.dkr.ecr.us-east-1.amazonaws.com/api-user
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "ffce61db81c91aba4e88bf340140eca5acd65aae"
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 150m
+    memory: 256Mi
+ingress:
+  enabled: true
+  className: "nginx-external-l4"
+  annotations: {}
+  hosts:
+    - host: dev-bo.allpresent.xyz
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: backoffice-api
+              port:
+                number: 80
+  tls: []
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
