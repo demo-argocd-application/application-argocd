@@ -40,7 +40,7 @@ spec:
           releaseName: backoffice-api
           valueFiles:
             - values.yaml
-            - "{{valueFiles}}"
+            - "{{valuesFile}}"
       destination:
         name: "{{cluster}}"
         namespace: "{{namespace}}"
