@@ -1,0 +1,78 @@
+envVars:
+  - name: NODE_ENV
+    value: "production"
+  - name: PORT
+    value: "3000"
+  - name: DATABASE_URL
+    value: "postgresql://postgres.uxyfllcqlhebyuqndgwk:RFYs2gGFWVT9xpc2@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+  - name: DIRECT_URL
+    value: "postgresql://postgres.uxyfllcqlhebyuqndgwk:RFYs2gGFWVT9xpc2@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+  - name: JWT_SECRET
+    value: "3OCOX1Q90vl6mKVaX97c9j3w+GCvdWOdV/T1QTZlaxhnZEfdWXLnEYIsXHFAhRFfHqZw1RnNdfDPbkz3CxYb5w=="
+  - name: SUPABASE_URL
+    value: "https://uxyfllcqlhebyuqndgwk.supabase.co"
+  - name: SUPABASE_ANON_KEY
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4eWZsbGNxbGhlYnl1cW5kZ3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2MDEwNjksImV4cCI6MjA1MjE3NzA2OX0.mxXVWP5At78Z_9Bmz5eBT5kviWqWy58sQlmcpGbUK2U"
+  - name: SUPABASE_JWT_SECRET
+    value: "3OCOX1Q90vl6mKVaX97c9j3w+GCvdWOdV/T1QTZlaxhnZEfdWXLnEYIsXHFAhRFfHqZw1RnNdfDPbkz3CxYb5w=="
+  - name: SUPABASE_ROLE_KEY
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4eWZsbGNxbGhlYnl1cW5kZ3drIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNjYwMTA2OSwiZXhwIjoyMDUyMTc3MDY5fQ.Fjhs_3XT8yvr5ydynKhpxS5qzU3PnZXkBd1-aI38zVo
+  - name: REDIS_HOST
+    value: "redis-13468.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com"
+  - name: REDIS_PORT
+    value: "13468"
+  - name: REDIS_USERNAME
+    value: "default"
+  - name: REDIS_PASSWORD
+    value: "2orKtuENEbzTz5MINg7iqlG6gIgA5JfB"
+  - name: CALLBACK_TOPUP
+    value: "https://apis-bo.onpay.asia"
+  - name: GATEWAY_QR_CODE
+    value: "https://apis.onpay.asia"
+  - name: PUSHER_APP_ID
+    value: "1956789"
+  - name: PUSHER_KEY
+    value: "c52bdef35ed11482cb79"
+  - name: PUSHER_SECRET
+    value: "8d5ca5855cb808eed224"
+  - name: PUSHER_CLUSTER
+    value: "ap1"
+  - name: PUSHER_USE_TLS
+    value: "false"
+  - name: HTTP_TIMEOUT
+    value: 3000
+  - name: HTTP_MAX_REDIRECTS
+    value: 3
+image:
+  repository: 471112914978.dkr.ecr.ap-southeast-1.amazonaws.com/bigpay-api-bo
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "9ee5ebebee46c1a01b712ae3f1bdb808b5b6e4ea"
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 500Mi
+ingress:
+  enabled: true
+  className: "nginx-external-l4"
+  annotations: {}
+  hosts:
+    - host: apis-bo.onpay.asia
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: onpay-api-bo
+              port:
+                number: 80
+  tls: []
+replicaCount: 1
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
