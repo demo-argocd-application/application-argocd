@@ -2,4 +2,4 @@ apiVersion: v2
 name: backoffice-api
 description: A Helm chart for Kubernetes
 version: 0.1.0
-appVersion: "529e15825e8301b12008c821f923f985a4252dc1"
+appVersion: "f294d040821b65eed0ac3c1273314edd0886bbbe"
