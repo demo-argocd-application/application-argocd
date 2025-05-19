@@ -2,48 +2,36 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: backoffice-api
-  labels:
-    application: backoffice-api
+  namespace: argocd
 spec:
-  type: NodePort
-  template:
-    spec:
-      imagePullSecrets:
-        - name: ecr-secret
   generators:
     - list:
         elements:
-          - cluster: backoffice-api
+          - env: dev
             namespace: backoffice-api
-            env: dev
             valuesFile: dev.yaml
-          - cluster: backoffice-api-prod
+          - env: prod
             namespace: backoffice-api-prod
-            env: prod
             valuesFile: prod.yaml
+          - env: staging
+            namespace: backoffice-api-staging
+            valuesFile: staging.yaml
   template:
     metadata:
-      name: "{{env}}-{{cluster}}-backoffice-api"
-      labels:
-        application: backoffice-api
+      name: '{{env}}-backoffice-api'
     spec:
-      project: backoffice-api
+      project: default
       source:
-        repoURL: "https://github.com/demo-argocd-application/application-argocd.git"
+        repoURL: https://github.com/demo-argocd-application/application-argocd.git
         targetRevision: HEAD
         path: backoffice-api
         helm:
-          skipCrds: true
-          releaseName: backoffice-api
           valueFiles:
             - values.yaml
-            - "{{valuesFile}}"
+            - '{{valuesFile}}'       # <<<<<< ดึงไฟล์แต่ละ env แบบ dynamic
       destination:
-        name: "{{cluster}}"
-        namespace: "{{namespace}}"
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
-          prune: true
           selfHeal: true
-        syncOptions:
-          - CreateNamespace=true

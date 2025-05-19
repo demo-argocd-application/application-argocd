@@ -11,11 +11,4 @@ image:
   repository: 793414601893.dkr.ecr.us-east-1.amazonaws.com/backoffice-api
   tag: latest
   pullPolicy: IfNotPresent
-
-service:
-  type: NodePort     # <<< สำคัญ: ตั้งให้เป็น NodePort
-  port: 80
-  targetPort: 3000   # <<< แก้ให้ตรงกับ port ที่ container ใช้
-  nodePort: 32080    # <<< จะใช้พอร์ตนี้ในการ reverse จาก NGINX
-
 resources: {}
