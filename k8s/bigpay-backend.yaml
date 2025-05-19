@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bigpay-backend
+  namespace: argocd
+  labels:
+    application: bigpay-backend
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: phoenix
+            namespace: bigpay-uat
+            valueFiles: dev.yaml
+            env: dev
+          - cluster: phoenix
+            namespace: bigpay-staging
+            valueFiles: staging.yaml
+            env: staging
+          - cluster: phoenix
+            namespace: bigpay-prod
+            valueFiles: main.yaml
+            env: main
+          - cluster: phoenix
+            namespace: onpay-uat
+            valueFiles: onpay.yaml
+            env: onpay
+          - cluster: phoenix
+            namespace: onpay-staging
+            valueFiles: onpay-staging.yaml
+            env: onpay-staging
+          - cluster: phoenix
+            namespace: flowpay-stg
+            valueFiles: flowpay.yaml
+            env: flowpay
+          - cluster: phoenix
+            namespace: onpay-prod
+            valueFiles: main-onpay.yaml
+            env: main-onpay
+          - cluster: phoenix
+            namespace: bigpay-admin
+            valueFiles: main-bp-bo.yaml
+            env: main-bp-bo
+  template:
+    metadata:
+      name: "{{env}}-bigpay-backend"
+      labels:
+        application: bigpay-backend
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: "471112914978.dkr.ecr.ap-southeast-1.amazonaws.com/bigpay-backend"
+        argocd-image-updater.argoproj.io/bigpay-backend.update-strategy: "latest"
+        argocd-image-updater.argoproj.io/bigpay-backend.allow-tags: "regexp:^v?[0-9]+.[0-9]+.[0-9]+$"
+    spec:
+      project: bigpay
+      source:
+        repoURL: "https://github.com/phoenix-devx/phoenix-argo-cd.git"
+        targetRevision: main
+        path: bigpay-backend
+        helm:
+          skipCrds: true
+          releaseName: bigpay-backend
+          valueFiles:
+            - values.yaml
+            - "{{valueFiles}}"
+      destination:
+        # server: "https://kubernetes.default.svc"
+        name: "{{cluster}}"
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
