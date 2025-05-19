@@ -5,6 +5,7 @@ metadata:
   labels:
     application: backoffice-api
 spec:
+  type: NodePort
   template:
     spec:
       imagePullSecrets:
@@ -16,14 +17,10 @@ spec:
             namespace: backoffice-api
             env: dev
             valuesFile: dev.yaml
-          - cluster: backoffice-api
+          - cluster: backoffice-api-prod
             namespace: backoffice-api-prod
             env: prod
             valuesFile: prod.yaml
-          - cluster: backoffice-api
-            namespace: backoffice-api-staging
-            env: staging
-            valuesFile: staging.yaml
   template:
     metadata:
       name: "{{env}}-{{cluster}}-backoffice-api"
