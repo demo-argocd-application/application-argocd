@@ -1,0 +1,70 @@
+envVars:
+  - name: NODE_ENV
+    value: "Production"
+  - name: PORT
+    value: "3000"
+  - name: DATABASE_URL
+    value: "postgresql://postgres.uxyfllcqlhebyuqndgwk:RFYs2gGFWVT9xpc2@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+  - name: DIRECT_URL
+    value: "postgresql://postgres.uxyfllcqlhebyuqndgwk:RFYs2gGFWVT9xpc2@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+  - name: JWT_SECRET
+    value: "3OCOX1Q90vl6mKVaX97c9j3w+GCvdWOdV/T1QTZlaxhnZEfdWXLnEYIsXHFAhRFfHqZw1RnNdfDPbkz3CxYb5w=="
+  - name: SUPABASE_URL
+    value: "https://uxyfllcqlhebyuqndgwk.supabase.co"
+  - name: SUPABASE_ANON_KEY
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4eWZsbGNxbGhlYnl1cW5kZ3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2MDEwNjksImV4cCI6MjA1MjE3NzA2OX0.mxXVWP5At78Z_9Bmz5eBT5kviWqWy58sQlmcpGbUK2U"
+  - name: SUPABASE_JWT_SECRET
+    value: "3OCOX1Q90vl6mKVaX97c9j3w+GCvdWOdV/T1QTZlaxhnZEfdWXLnEYIsXHFAhRFfHqZw1RnNdfDPbkz3CxYb5w=="
+  - name: REDIS_HOST
+    value: "redis-13468.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com"
+  - name: REDIS_PORT
+    value: "13468"
+  - name: REDIS_USERNAME
+    value: "default"
+  - name: REDIS_PASSWORD
+    value: "2orKtuENEbzTz5MINg7iqlG6gIgA5JfB"
+  - name: REDIS_PREFIX
+    value: "prod-cache:"
+  - name: MONGO_URL
+    value: "mongodb+srv://doadmin:Wv2c371U5B9A06Nh@db-mongodb-sgp1-94473-db9bf571.mongo.ondigitalocean.com/admin?tls=true&authSource=admin"
+  - name: URL_WITHDRAW_CALLBACK
+    value: "https://apis.onpay.asia/api/v1/withdraw/callback/withdraws/bot"
+  - name: URL_TRANSFER_CALLBACK_BAY
+    value: "https://workers-bay.onpay.asia/api/callback-withdraw-bay"
+  - name: HTTP_TIMEOUT
+    value: 3000
+  - name: HTTP_MAX_REDIRECTS
+    value: 3
+image:
+  repository: 471112914978.dkr.ecr.ap-southeast-1.amazonaws.com/bigpay-api-bo
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0b65d5466bc45507a526fc0fcb77f89de465ee72"
+resources:
+  requests:
+    cpu: 2000m
+    memory: 2048Mi
+  limits:
+    cpu: 4000m
+    memory: 4000Mi
+ingress:
+  enabled: true
+  className: "nginx-external-l4"
+  annotations: {}
+  hosts:
+    - host: workers-bay.onpay.asia
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: workers-bay
+              port:
+                number: 80
+  tls: []
+replicaCount: 0
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

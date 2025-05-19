@@ -1,0 +1,76 @@
+envVars:
+  - name: NODE_ENV
+    value: "Development"
+  - name: PORT
+    value: "3000"
+  - name: SUPABASE_URL
+    value: "https://cdpkcijpwtgzuociltoj.supabase.co"
+  - name: SUPABASE_ANON_KEY
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkcGtjaWpwd3RnenVvY2lsdG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNzMxNTUsImV4cCI6MjA1NTk0OTE1NX0.IGwJw_3zxvbvs_qAyrQrcqfRfBCsLKfxVMT-P_KqM5c"
+  - name: SUPABASE_ANONSUPABASE_KEY_KEY
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkcGtjaWpwd3RnenVvY2lsdG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNzMxNTUsImV4cCI6MjA1NTk0OTE1NX0.IGwJw_3zxvbvs_qAyrQrcqfRfBCsLKfxVMT-P_KqM5c"
+  - name: SUPABASE_JWT_SECRET
+    value: "oc2L6vGxiSHapsGjEpZrmacu0wgYx7DSP0aVFWk+kGqpNaGismIEwepd3XqN+tYOlGgAfJflcTrx3dNHGUKl3w=="
+  - name: SUPABASE_SERVICE_ROLE_KEY
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkcGtjaWpwd3RnenVvY2lsdG9qIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDM3MzE1NSwiZXhwIjoyMDU1OTQ5MTU1fQ.DazHGfCXeXxH802mwrh4jTCE4_9eoGW9lPMU9UQz6Jk"
+    # Connect to Supabase via connection pooling with Supavisor.
+  - name: DATABASE_URL
+    value: "postgresql://postgres.cdpkcijpwtgzuociltoj:p0WKmoNUywRIjUVb@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+    # Direct connection to the database. Used for migrations.
+  - name: DIRECT_URL
+    value: "postgresql://postgres.cdpkcijpwtgzuociltoj:p0WKmoNUywRIjUVb@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+  - name: JWT_SECRET
+    value: "oc2L6vGxiSHapsGjEpZrmacu0wgYx7DSP0aVFWk+kGqpNaGismIEwepd3XqN+tYOlGgAfJflcTrx3dNHGUKl3w=="
+  - name: REDIS_HOST
+    value: "redis-13468.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com"
+  - name: REDIS_PORT
+    value: "13468"
+  - name: REDIS_USERNAME
+    value: "default"
+  - name: REDIS_PASSWORD
+    value: "2orKtuENEbzTz5MINg7iqlG6gIgA5JfB"
+  - name: REDIS_PREFIX
+    value: "stg-cache:"
+  - name: MONGO_URL
+    value: "mongodb+srv://doadmin:Wv2c371U5B9A06Nh@db-mongodb-sgp1-94473-db9bf571.mongo.ondigitalocean.com/admin?tls=true&authSource=admin"
+  - name: URL_WITHDRAW_CALLBACK
+    value: "https://uat-apis.onpay.asia/api/v1/withdraw/callback/withdraws/bot"
+  - name: URL_TRANSFER_CALLBACK_BAY
+    value: "https://stg-workers-bay.onpay.asia/api/callback-withdraw-bay"
+  - name: HTTP_TIMEOUT
+    value: 3000
+  - name: HTTP_MAX_REDIRECTS
+    value: 3
+image:
+  repository: 471112914978.dkr.ecr.ap-southeast-1.amazonaws.com/bigpay-api-bo
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0b65d5466bc45507a526fc0fcb77f89de465ee72"
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 500Mi
+ingress:
+  enabled: true
+  className: "nginx-external-l4"
+  annotations: {}
+  hosts:
+    - host: stg-workers-bay.onpay.asia
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: workers-bay
+              port:
+                number: 80
+  tls: []
+replicaCount: 1
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

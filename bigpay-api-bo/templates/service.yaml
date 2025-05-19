@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "bigpay-api-bo.fullname" . }}
+  labels:
+    {{- include "bigpay-api-bo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- range .Values.service.ports }}
+    - name: {{ .name }}
+      targetPort: {{ .name }}
+      protocol: {{ .protocol }}
+      port: {{ .containerPort }}
+    {{- end }}
+  selector:
+    {{- include "bigpay-api-bo.selectorLabels" . | nindent 4 }}
