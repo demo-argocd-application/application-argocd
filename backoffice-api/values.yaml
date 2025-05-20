@@ -94,3 +94,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+ingress:
+  enabled: false
+  className: nginx-external-l4
+  hosts:
+    - host: dev-bo.allpresent.xyz
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              port:
+                number: 80
